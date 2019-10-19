@@ -1,4 +1,4 @@
-# fire-shield
+# fire-shield-frontend
 
 ## Project setup
 ```

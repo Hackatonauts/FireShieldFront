@@ -38,6 +38,13 @@
             counter="10"
           >
           </v-text-field>
+          <v-text-field
+            label="Status (open, closed)"
+            v-model="status"
+            v-on:keyup="refreshList"
+            counter="10"
+          >
+          </v-text-field>
         </v-col>
       </v-row>
       <FireList :fires="fires" />
@@ -66,6 +73,7 @@ export default {
     paths: [],
     edited: null,
     radius: null,
+    status: null,
     secondPaths: [[]]
   }),
   methods: {
@@ -81,6 +89,7 @@ export default {
     },
     getFireList() {
       const range = this.radius ? this.radius : 10000;
+      const status = this.status ? this.status : "open";
       axios
         .get(
           "http://192.168.137.1:8080/fires?lat=" +
@@ -88,7 +97,9 @@ export default {
             "&lng=" +
             this.userLocation.lng +
             "&radius=" +
-            range
+            range +
+            "&status=" +
+            status
         )
         .then(response => {
           this.fires = response.data.fires;

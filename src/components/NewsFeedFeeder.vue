@@ -4,7 +4,7 @@ import axios from 'axios';
     <v-row>
       <v-col col="12">
         <v-textarea
-          color="red"
+          color="red darken-4"
           clearable
           clear-icon="mdi-close-circle"
           prepend-icon="mdi-newspaper-variant"
@@ -13,9 +13,21 @@ import axios from 'axios';
           v-model="description"
         ></v-textarea>
       </v-col>
-
       <v-col cols="12">
-        <v-btn v-on:click="sendRequest" color="red">
+        <v-file-input
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Fire photo"
+          prepend-icon="mdi-camera"
+          v-model="file"
+          label="Send fire photo"
+        ></v-file-input>
+      </v-col>
+      <v-col cols="12">
+        <v-btn
+          v-on:click="sendRequest"
+          color="red darken-4"
+          class="white--text"
+        >
           ADD FIRE<v-icon>mdi-fire</v-icon>
         </v-btn>
       </v-col>
@@ -30,7 +42,8 @@ export default {
   props: ["fireId", "userLocation"],
   data() {
     return {
-      description: null
+      description: null,
+      file: null
     };
   },
   methods: {
@@ -47,7 +60,24 @@ export default {
           }
         })
         .then(response => {
-          console.log(response);
+          console.log("Report: ", response);
+
+          if (this.file) {
+            var formData = new FormData();
+            formData.append("image", this.file);
+            formData.append("reportId", response.data.id);
+
+            axios
+              .post(config.serverIp + "/report/img", formData, {
+                Accept: "application/json",
+                "Content-Type": "multipart/form-data"
+              })
+              .then(response => {
+                console.log("Image: ", response);
+              });
+          }
+
+          this.$router.push({ path: "/fire/" + response.data.fireId });
         });
     }
   }

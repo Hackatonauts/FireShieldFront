@@ -26,7 +26,7 @@
             v-model="dense"
             label="Dense table"
             class="mt-2"
-            color="red"
+            color="red darken-4"
           ></v-switch>
         </v-toolbar>
       </template>
@@ -41,7 +41,7 @@
           <td>{{ item.position.lat }}</td>
           <td>{{ item.position.lng }}</td>
           <td>
-            <v-btn fab small text color="error" :to="'/fire/' + item.id"
+            <v-btn fab small text color="red darken-4" :to="'/fire/' + item.id"
               ><v-icon>mdi-arrow-expand-all</v-icon></v-btn
             >
           </td>
@@ -50,7 +50,7 @@
               fab
               small
               text
-              color="error"
+              color="red darken-4"
               @click="$parent.target(item.position.lat, item.position.lng)"
               ><v-icon>mdi-map-marker-radius</v-icon></v-btn
             >
@@ -62,7 +62,7 @@
       <v-progress-circular
         :size="70"
         :width="7"
-        color="red"
+        color="red darken-4"
         indeterminate
       ></v-progress-circular>
     </div>

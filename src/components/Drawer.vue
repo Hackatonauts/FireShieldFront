@@ -9,7 +9,7 @@
     <v-container>
       <v-flex xs12 class="text-xs-center my-4">
         <h1 class="absolute-logo white--text">
-          <span class="red--text">FIRE</span>SHIELD
+          <span class="red--text text--darken-4">FIRE</span>SHIELD
         </h1>
       </v-flex>
     </v-container>

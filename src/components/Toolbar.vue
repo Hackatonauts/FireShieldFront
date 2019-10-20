@@ -2,7 +2,7 @@
   <v-app-bar app dark color="grey darken-4">
     <v-app-bar-nav-icon class="hidden-md-and-up" @click="toggleDrawer" />
     <v-toolbar-title class="headline text-uppercase">
-      <span class="red--text">FIRE</span>
+      <span class="red--text text--darken-4">FIRE</span>
       <span class="font-weight-light">SHIELD</span>
     </v-toolbar-title>
     <v-spacer></v-spacer>

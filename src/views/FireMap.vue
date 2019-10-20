@@ -7,6 +7,7 @@
       style="width: 100%; height:500px"
     >
       <GmapMarker
+        v-if="userLocation.lat"
         :position="{ lat: userLocation.lat, lng: userLocation.lng }"
         :clickable="true"
       />
@@ -28,9 +29,21 @@
       </gmap-polygon>
     </gmap-map>
     <v-container>
-      <h1>Fire List:</h1>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="5" md="8" class="pr-0"><h1>Fire List:</h1></v-col>
+        <v-col cols="3" md="2" class="pt-0 pb-0">
+          <v-btn
+            class="ma-3 white--text red darken-4"
+            v-on:click="audioPlaying ? stopSound() : playSound(audioUrl)"
+          >
+            {{ audioPlaying ? "STOP" : "PLAY"
+            }}<v-icon>{{ audioPlaying ? "mdi-stop" : "mdi-play" }}</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col cols="3" md="2" class="pt-0 pb-0">
+          <v-checkbox label="Autoplay" color="red darken-4" />
+        </v-col>
+        <v-col cols="12" class="pt-0">
           <v-text-field
             label="Radius (in m, default = 10 000 m, max: 40 000 000)"
             v-model="radius"
@@ -42,7 +55,7 @@
             :items="['open', 'all', 'closed']"
             v-model="status"
             v-on:change="refreshList"
-            label="Status (open, closed, all)"
+            label="Status (open[deafult], closed, all)"
           ></v-select>
         </v-col>
       </v-row>
@@ -74,13 +87,23 @@ export default {
     edited: null,
     radius: null,
     status: null,
-    secondPaths: [[]]
+    secondPaths: [[]],
+
+    audio: null,
+    audioPlaying: false,
+    autoPlay: false,
+    audioUrl: null
   }),
   methods: {
     getLocation() {
       navigator.geolocation.getCurrentPosition(position => {
         this.center.lat = position.coords.latitude;
         this.center.lng = position.coords.longitude;
+
+        this.userLocation.lat = null;
+
+        this.userLocation.lat = position.coords.latitude;
+        this.userLocation.lng = position.coords.longitude;
       });
     },
     target(lat, lng) {
@@ -118,6 +141,10 @@ export default {
               this.paths.push(element.position.area[0]);
               this.secondPaths.push(element.position.area[1]);
             }
+
+          this.audioUrl = response.data.voiceUrl;
+          if (this.autoPlay) this.playSound(this.audioUrl);
+
           console.log(this.berlinPaths);
           console.log(this.paths);
         });
@@ -136,6 +163,17 @@ export default {
     },
     refreshList() {
       this.getFireList();
+    },
+    playSound(sound) {
+      if (sound) {
+        this.audio = new Audio(sound);
+        this.audio.play();
+      }
+      this.audioPlaying = true;
+    },
+    stopSound() {
+      this.audio.pause();
+      this.audioPlaying = false;
     }
   },
   created() {

@@ -24,9 +24,10 @@
 
       <v-col cols="6">
         <strong>Status: </strong>
-        <span :class="status === 'open' ? 'red--text' : 'green-text'">{{
-          status.toUpperCase()
-        }}</span>
+        <span
+          :class="status === 'open' ? 'red--text text--darken-4' : 'green-text'"
+          >{{ status.toUpperCase() }}</span
+        >
       </v-col>
     </v-row>
     <v-row>

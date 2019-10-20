@@ -16,10 +16,10 @@
       <v-row>
         <v-col cols="12" class="px-5">
           <v-card-text class="white--text pt-0 text-left">
-            <span class="red--text">FIRE</span>SHILED is wild fires tracking app
-            and can help you in emergency situations like wild fires and
-            hurricanes. It also can guide you how to get to nearest hospital or
-            evacuation point.
+            <span class="red--text text--darken-4">FIRE</span>SHILED is wild
+            fires tracking app and can help you in emergency situations like
+            wild fires and hurricanes. It also can guide you how to get to
+            nearest hospital or evacuation point.
           </v-card-text>
         </v-col>
       </v-row>

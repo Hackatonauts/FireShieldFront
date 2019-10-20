@@ -7,7 +7,7 @@
         </v-col>
         <v-col cols="12">
           <v-text-field
-            color="red"
+            color="red darken-4"
             clearable
             clear-icon="mdi-close-circle"
             prepend-icon="mdi-pen"
@@ -38,7 +38,7 @@
             <v-date-picker
               v-model="date"
               @input="menu1 = false"
-              color="red"
+              color="red darken-4"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -67,7 +67,7 @@
               v-if="menu2"
               v-model="time"
               full-width
-              color="red"
+              color="red darken-4"
               @click:minute="$refs.menu.save(time)"
             ></v-time-picker>
           </v-menu>
@@ -76,7 +76,7 @@
       <v-row>
         <v-col col="12">
           <v-textarea
-            color="red"
+            color="red darken-4"
             clearable
             clear-icon="mdi-close-circle"
             prepend-icon="mdi-newspaper-variant"
@@ -84,6 +84,15 @@
             rows="1"
             v-model="description"
           ></v-textarea>
+        </v-col>
+        <v-col cols="12">
+          <v-file-input
+            accept="image/png, image/jpeg, image/bmp"
+            placeholder="Fire photo"
+            prepend-icon="mdi-camera"
+            v-model="file"
+            label="Send fire photo"
+          ></v-file-input>
         </v-col>
       </v-row>
       <v-row>
@@ -108,7 +117,10 @@
           ></gmap-map>
         </v-col>
         <v-col cols="12">
-          <v-btn v-on:click="sendPostRequest" color="red"
+          <v-btn
+            v-on:click="sendPostRequest"
+            color="red darken-4"
+            class="white--text"
             >ADD FIRE<v-icon>mdi-fire</v-icon></v-btn
           >
         </v-col>
@@ -150,7 +162,8 @@ export default {
     ],
     edited: null,
 
-    description: null
+    description: null,
+    file: null
   }),
 
   watch: {
@@ -246,6 +259,8 @@ export default {
           }
         })
         .then(response => {
+          console.log("Fire: ", response);
+
           axios
             .post(config.serverIp + "/report/", {
               fireId: response.data.id,
@@ -258,7 +273,23 @@ export default {
               }
             })
             .then(response => {
-              console.log(response);
+              console.log("Report: ", response);
+
+              if (this.file) {
+                var formData = new FormData();
+                formData.append("image", this.file);
+                formData.append("reportId", response.data.id);
+
+                axios
+                  .post(config.serverIp + "/report/img", formData, {
+                    Accept: "application/json",
+                    "Content-Type": "multipart/form-data"
+                  })
+                  .then(response => {
+                    console.log("Image: ", response);
+                  });
+              }
+
               this.$router.push({ path: "/fire/" + response.data.fireId });
             });
         });

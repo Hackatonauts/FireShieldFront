@@ -102,14 +102,15 @@ export default {
             status
         )
         .then(response => {
-          this.fires = response.data.fires;
+          if (response.status == "204") this.fires = [];
+          else this.fires = response.data.fires;
 
           this.paths = null;
           this.paths = [];
           this.secondPaths = null;
           this.secondPaths = [];
 
-          console.log(response.data);
+          console.log(response);
 
           if (this.fires)
             for (let element of this.fires) {

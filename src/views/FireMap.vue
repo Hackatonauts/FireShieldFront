@@ -38,13 +38,12 @@
             counter="10"
           >
           </v-text-field>
-          <v-text-field
-            label="Status (open, closed)"
+          <v-select
+            :items="['open', 'all', 'closed']"
             v-model="status"
-            v-on:keyup="refreshList"
-            counter="10"
-          >
-          </v-text-field>
+            v-on:change="refreshList"
+            label="Status (open, closed, all)"
+          ></v-select>
         </v-col>
       </v-row>
       <FireList :fires="fires" />
@@ -56,6 +55,7 @@
 import gmapStyle from "../data/gmap-style.json";
 import polygonStyle from "../data/polygon-style.json";
 import axios from "axios";
+import config from "../config/config.json";
 
 export default {
   components: {
@@ -92,7 +92,8 @@ export default {
       const status = this.status ? this.status : "open";
       axios
         .get(
-          "http://192.168.137.1:8080/fires?lat=" +
+          config.serverIp +
+            "/fires?lat=" +
             this.userLocation.lat +
             "&lng=" +
             this.userLocation.lng +

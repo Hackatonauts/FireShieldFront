@@ -24,6 +24,7 @@ import axios from 'axios';
 </template>
 <script>
 import axios from "axios";
+import config from "../config/config.json";
 
 export default {
   props: ["fireId", "userLocation"],
@@ -35,7 +36,7 @@ export default {
   methods: {
     sendRequest() {
       axios
-        .post("http://192.168.137.1:8080/report/", {
+        .post(config.serverIp + "/report/", {
           fireId: this.fireId,
           description: this.description,
           images: [],

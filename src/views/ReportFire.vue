@@ -122,6 +122,7 @@ import moment from "moment";
 import gmapStyle from "../data/gmap-style.json";
 import polygonStyle from "../data/polygon-style.json";
 import axios from "axios";
+import config from "../config/config.json";
 
 export default {
   data: vm => ({
@@ -231,7 +232,7 @@ export default {
       const eventOccured = new Date(this.date + " " + this.time).toISOString();
 
       axios
-        .post("http://192.168.137.1:8080/fire", {
+        .post(config.serverIp + "/fire", {
           name: this.name,
           date: eventOccured,
           source: {
@@ -246,7 +247,7 @@ export default {
         })
         .then(response => {
           axios
-            .post("http://192.168.137.1:8080/report/", {
+            .post(config.serverIp + "/report/", {
               fireId: response.data.id,
               description: this.description,
               images: [],

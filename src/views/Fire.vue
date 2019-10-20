@@ -75,6 +75,7 @@ import axios from "axios";
 import moment from "moment";
 import gmapStyle from "../data/gmap-style.json";
 import polygonStyle from "../data/polygon-style.json";
+import config from "../config/config.json";
 
 export default {
   props: ["id"],
@@ -104,7 +105,7 @@ export default {
   },
   methods: {
     sendRequest() {
-      axios.get("http://192.168.137.1:8080/fire/" + this.id).then(response => {
+      axios.get(config.serverIp + "/fire/" + this.id).then(response => {
         console.log(response);
         this.name = response.data.name;
         this.date = response.data.date;
@@ -115,7 +116,7 @@ export default {
         this.status = response.data.status;
 
         axios
-          .get("http://192.168.137.1:8080/reports?fireId=" + this.id)
+          .get(config.serverIp + "/reports?fireId=" + this.id)
           .then(response => {
             console.log(response);
             this.reports = response.data;
@@ -133,7 +134,7 @@ export default {
     },
     refreshNewsFeed() {
       axios
-        .get("http://192.168.137.1:8080/reports?fireId=" + this.id)
+        .get(config.serverIp + "/reports?fireId=" + this.id)
         .then(response => {
           console.log(response);
           this.reports = response.data;

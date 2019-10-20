@@ -258,6 +258,7 @@ export default {
             })
             .then(response => {
               console.log(response);
+              this.$router.push({ path: "/fire/" + response.data.fireId });
             });
         });
     }

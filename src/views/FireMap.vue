@@ -172,7 +172,7 @@ export default {
       this.audioPlaying = true;
     },
     stopSound() {
-      this.audio.pause();
+      if (this.audio) this.audio.pause();
       this.audioPlaying = false;
     }
   },
